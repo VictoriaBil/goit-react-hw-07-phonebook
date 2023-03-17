@@ -1,16 +1,23 @@
-export const App = () => {
+import { Form } from './Form/Form';
+import { ContactList } from '../components/ContactList/ContactList';
+import { useSelector } from 'react-redux';
+import Filter from './Filter/Filter';
+import Notification from './Notification/Notification';
+import css from './App.module.css';
+
+export function App() {
+  const { contacts } = useSelector(state => state.contacts);
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
+    <div className={css.container}>
+      <h1 className={css.title}>Phonebook</h1>
+      <Form />
+      <h2 className={css.title}>Contacts</h2>
+      {contacts.length === 0 ? (
+        <Notification message="There are no contacts in your phonebook yet" />
+      ) : (
+        <Filter />
+      )}
+      <ContactList />
     </div>
   );
-};
+}
