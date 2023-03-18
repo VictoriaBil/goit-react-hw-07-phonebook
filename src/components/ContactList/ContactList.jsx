@@ -3,13 +3,13 @@ import css from './ContactList.module.css';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchContacts, removeContact } from '../../redux/contacts/operations';
-import { ToastContainer, toast } from 'react-toastify';
+import { Loader } from '../Loader/Loader';
 import 'react-toastify/dist/ReactToastify.css';
 
 export function ContactList() {
   const dispatch = useDispatch();
   const filterValue = useSelector(state => state.filter.filter);
-  const { contacts } = useSelector(state => state.contacts);
+  const { contacts, isLoading, error } = useSelector(state => state.contacts);
 
   useEffect(() => {
     dispatch(fetchContacts());
@@ -23,23 +23,30 @@ export function ContactList() {
   }
 
   return (
-    <ul className={css.list}>
-      {filteredContacts().map(({ name, phone, id }) => {
-        return (
-          <li className={css.contact} key={id}>
-            <p className={css.name}>{name}</p> :
-            <p className={css.phone}>{phone}</p>
-            <button
-              className={css.contactBtn}
-              type="button"
-              onClick={() => dispatch(removeContact(id))}
-            >
-              Delete
-            </button>
-          </li>
-        );
-      })}
-      <ToastContainer />
-    </ul>
+    <>
+      {isLoading && <Loader />}
+      {error && 'Something went wrong. Please, try again'}
+      {contacts.length > 0 && !isLoading && !error && (
+        <>
+          <ul className={css.list}>
+            {filteredContacts().map(({ name, phone, id }) => {
+              return (
+                <li className={css.contact} key={id}>
+                  <p className={css.name}>{name}</p> :
+                  <p className={css.phone}>{phone}</p>
+                  <button
+                    className={css.contactBtn}
+                    type="button"
+                    onClick={() => dispatch(removeContact(id))}
+                  >
+                    Delete
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      )}
+    </>
   );
 }
