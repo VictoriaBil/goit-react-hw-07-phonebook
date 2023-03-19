@@ -44,7 +44,9 @@ export function Form() {
         theme: 'colored',
       });
     } else {
-      dispatch(addContact({ id: nanoid(), name, number }));
+      dispatch(
+        addContact({ id: nanoid(), name, phone: number, createdAt: Date.now() })
+      );
       toast.success(`${name} has been added`, {
         autoClose: 2000,
         theme: 'colored',
