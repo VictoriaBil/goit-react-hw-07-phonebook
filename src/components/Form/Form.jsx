@@ -38,7 +38,7 @@ export function Form() {
         autoClose: 2000,
         theme: 'colored',
       });
-    } else if (contacts.find(contact => contact.number === number)) {
+    } else if (contacts.find(contact => contact.phone === number)) {
       return toast.warning(`${number} is already in contacts`, {
         autoClose: 2000,
         theme: 'colored',
